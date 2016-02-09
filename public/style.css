@@ -97,6 +97,20 @@ h1 {
   margin-left: 55px;
 }
 
+.sign {
+  position: relative;
+  top: -40px;
+}
+
+.sign a {
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.sign a:first-child {
+  
+}
+
 form {
   margin: 10px;
 }
