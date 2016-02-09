@@ -17,8 +17,13 @@
     <div class="topbar">
       <h1>Shortly</h1>
       <div class="sign" style="float: right">
-        <a href="/signup">Register</a>
-        <a href="/login">Log In</a>
+        <%if (loggedIn) { %>
+          <a href="/login">Log Out</a>
+        <%}%>
+        <%if (!loggedIn) { %>
+          <a href="/signup">Register</a>
+          <a href="/login">Log In</a>
+        <%}%>
       </div>
     </div>
     <%- body %>

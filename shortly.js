@@ -30,31 +30,35 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', 
 function(req, res) {
   if (loggedIn) {
-    res.render('index');
+    res.render('index', {loggedIn: loggedIn});
   } 
   else {
-    res.render('login');
+    loggedIn = false;
+    res.render('login', {loggedIn: loggedIn});
   }
 });
 
 app.get('/create', 
 function(req, res) {
   if (loggedIn) {
-    res.render('index');
+    res.render('index', {loggedIn: loggedIn});
   }
   else {
-    res.render('login');
+    loggedIn = false;
+    res.render('login', {loggedIn: loggedIn});
   }
 });
 
 app.get('/signup', 
 function(req, res) {
-  res.render('signup');
+  loggedIn = false;
+  res.render('signup', {loggedIn: loggedIn});
 });
 
 app.get('/login', 
 function(req, res) {
-  res.render('login');
+  loggedIn = false;
+  res.render('login', {loggedIn: loggedIn});
 });
 
 app.get('/links',
