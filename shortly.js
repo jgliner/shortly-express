@@ -15,6 +15,8 @@ var extAppFn = require('./app/appHelpers');
 
 var app = express();
 
+var loggedIn = false;
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.use(partials());
@@ -96,6 +98,8 @@ app.post('/signup', function(req, res) {
     hash = hash.slice(29);
     var dbObj = {username: username, password: hash, salt: salt};
     db.tableInsert(dbObj);
+    loggedIn = true;
+    res.redirect('/');
   });
 });
 
@@ -104,7 +108,10 @@ app.post('/login', function(req, res) {
   var password = req.body.password;
   db.tableRead(username, function(userData) {
     extAppFn.auth(username, password, userData, function(hash, saltyHash) {
-      console.log(hash === saltyHash);
+      if (hash === saltyHash) {
+        loggedIn = true;
+        res.redirect('/');
+      }
     });
   });
 });
