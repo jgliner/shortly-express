@@ -57,7 +57,15 @@ db.knex.schema.hasTable('users').then(function(exists) {
 /************************************************************/
 
 db.tableInsert = function(userObj) {
-  db.knex.select().table('users')
+  db.knex.select().table('users').where('username',userObj.username)
+  .then(function(rows) {
+    if (rows.length > 0) {
+      throw "Username taken";
+    }
+    else {
+      return rows;
+    }
+  })
   .then(function(rows) {
     return knex.insert(userObj, 'id').into('users');
   })
