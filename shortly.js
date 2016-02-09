@@ -93,7 +93,9 @@ app.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
   db.tableRead(username, function(userData) {
-    extAppFn.auth(username, password, userData);
+    extAppFn.auth(username, password, userData, function(hash, saltyHash) {
+      console.log(hash === saltyHash);
+    });
   });
 });
 

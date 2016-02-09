@@ -19,13 +19,13 @@ module.exports.encrypt = function(username, password, cb) {
   });
 };
 
-module.exports.auth = function(username, password, correctCombo) {
+module.exports.auth = function(username, password, correctCombo, cb) {
   var salt = '$2a$10$'+correctCombo.salt;
   var saltyHash = '$2a$10$'+correctCombo.salt+correctCombo.password;
   new Promise(function(resolve, reject) {
     bcrypt.hash(password, salt, function(err, hash) {
       if (err) { reject(err); }
-      console.log('USER ENTERED: ', hash, 'STORED: ',saltyHash);
+      cb(hash, saltyHash);
     });
   });
 };
