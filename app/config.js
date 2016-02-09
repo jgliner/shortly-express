@@ -53,7 +53,7 @@ db.knex.schema.hasTable('users').then(function(exists) {
 });
 
 /************************************************************/
-// Table methods
+// DB methods
 /************************************************************/
 
 db.tableInsert = function(userObj) {
@@ -69,6 +69,21 @@ db.tableInsert = function(userObj) {
   })
   .catch(function(err) {
     console.error(err);
+  });
+};
+
+db.tableRead = function(username, cb) {
+  db.knex.select().from('users').where('username',username)
+  .then(function(rows) {
+    if (rows.length === 0) {
+      throw "User doesn't exist, yo.";
+    }
+    else if (rows.length > 1) {
+      throw "Uhh, we somehow have multiple users with that name. Not sure how that happened.";
+    }
+    else {
+      cb(rows[0]);
+    }
   });
 };
 

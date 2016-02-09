@@ -89,6 +89,14 @@ app.post('/signup', function(req, res) {
   });
 });
 
+app.post('/login', function(req, res) {
+  var username = req.body.username;
+  var password = req.body.password;
+  db.tableRead(username, function(userData) {
+    extAppFn.auth(username, password, userData);
+  });
+});
+
 /************************************************************/
 // Handle the wildcard route last - if all other routes fail
 // assume the route is a short code and try and handle it here.
