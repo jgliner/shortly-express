@@ -47,11 +47,13 @@ function(req, res) {
   res.render('login');
 });
 
-app.get('/links', 
+app.get('/links',
 function(req, res) {
-  Links.reset().fetch().then(function(links) {
-    res.send(200, links.models);
-  });
+  if (loggedIn) {
+    Links.reset().fetch().then(function(links) {
+      res.send(200, links.models);
+    });
+  }
 });
 
 app.post('/links', 
@@ -97,8 +99,14 @@ app.post('/signup', function(req, res) {
     salt = salt.slice(7);
     hash = hash.slice(29);
     var dbObj = {username: username, password: hash, salt: salt};
-    db.tableInsert(dbObj);
-    loggedIn = true;
+    db.tableInsert(dbObj, function(result) {
+      if (result) {
+        loggedIn = true;
+      }
+      else {
+        loggedIn = false;
+      }
+    });
     res.redirect('/');
   });
 });
@@ -109,8 +117,13 @@ app.post('/login', function(req, res) {
   db.tableRead(username, function(userData) {
     extAppFn.auth(username, password, userData, function(hash, saltyHash) {
       if (hash === saltyHash) {
-        loggedIn = true;
+        loggedIn = username;
+        console.log(username, 'Logged In!');
         res.redirect('/');
+      }
+      else {
+        loggedIn = false;
+        res.redirect('/login');
       }
     });
   });
