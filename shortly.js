@@ -29,12 +29,22 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', 
 function(req, res) {
-  res.render('index');
+  if (loggedIn) {
+    res.render('index');
+  } 
+  else {
+    res.render('login');
+  }
 });
 
 app.get('/create', 
 function(req, res) {
-  res.render('index');
+  if (loggedIn) {
+    res.render('index');
+  }
+  else {
+    res.render('login');
+  }
 });
 
 app.get('/signup', 
