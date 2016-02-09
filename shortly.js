@@ -11,6 +11,8 @@ var Links = require('./app/collections/links');
 var Link = require('./app/models/link');
 var Click = require('./app/models/click');
 
+var extAppFn = require('./app/appHelpers');
+
 var app = express();
 
 app.set('views', __dirname + '/views');
@@ -79,7 +81,9 @@ function(req, res) {
 app.post('/login', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  console.log(username, password);
+  extAppFn.encrypt(username, password, function(username, salt, hash) {
+    console.log('did it work!?!?', username, salt, hash);
+  });
 });
 
 /************************************************************/
