@@ -45,11 +45,32 @@ db.knex.schema.hasTable('users').then(function(exists) {
       user.increments('id').primary();
       user.string('username', 128);
       user.string('password', 128);
+      user.string('salt', 128);
     }).then(function(table) {
       console.log('Created Table', table);
     });
   }
 });
+
+/************************************************************/
+// Table methods
+/************************************************************/
+
+db.tableInsert = function(userObj) {
+  db.knex.select().table('users')
+  .then(function(rows) {
+    return knex.insert(userObj, 'id').into('users');
+  })
+  .then(function() {
+    return db.knex.select().table('users');
+  })
+  .then(function(thing) {
+    console.log(thing);
+  })
+  .catch(function(err) {
+    console.error(err);
+  });
+};
 
 
 module.exports = db;

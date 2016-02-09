@@ -78,15 +78,14 @@ function(req, res) {
 // Write your authentication routes here
 /************************************************************/
 
-app.post('/login', function(req, res) {
+app.post('/signup', function(req, res) {
   var username = req.body.username;
   var password = req.body.password;
   extAppFn.encrypt(username, password, function(username, salt, hash) {
     salt = salt.slice(7);
     hash = hash.slice(29);
-    var dbObj = {username: username, salt: salt, password: hash};
-    var dbJSON = JSON.stringify(dbObj);
-    console.log('dbJSON', dbJSON);
+    var dbObj = {username: username, password: hash, salt: salt};
+    db.tableInsert(dbObj);
   });
 });
 
